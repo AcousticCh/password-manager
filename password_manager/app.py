@@ -9,7 +9,7 @@ class MainWindow(QMainWindow):
 
         # WINDOW SETUP
         self.setWindowTitle("Password Manager")
-        self.setMinimumSize(QSize(400, 300))
+        self.setMinimumSize(QSize(400, 200))
         
         # WIDGET CREATION/SETUP
 
