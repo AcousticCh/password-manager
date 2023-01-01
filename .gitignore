@@ -1,0 +1,6 @@
+env/
+pyproject.toml
+README.rst
+MANIFEST.in
+setup.*
+data.json
