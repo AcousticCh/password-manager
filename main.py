@@ -1,8 +1,7 @@
 from fastapi import FastAPI
-from .password_manager import data.json
 import json
-
-data_storage = data.json
+# CONSIDER OS.GETPATH
+data_storage = "./password_manager/example.json"
 api = FastAPI()
 
 @api.get("/accounts")
