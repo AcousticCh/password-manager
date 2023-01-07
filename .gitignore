@@ -3,4 +3,4 @@ pyproject.toml
 README.rst
 MANIFEST.in
 setup.*
-data.json
+password_manager/db.json
