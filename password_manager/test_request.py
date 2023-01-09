@@ -4,6 +4,7 @@ import json
 endpoint_root = "http://127.0.0.1:8000/"
 endpoint_add_json = "http://127.0.0.1:8000/add_json"
 endpoint_get_by_id = "http://127.0.0.1:8000/id/"
+endpoint_get_by_website = "http://127.0.0.1:8000/website/"
 body = { "accounts": {"6": {
     "index": 0,
     "website": "blubber",
@@ -13,8 +14,8 @@ body = { "accounts": {"6": {
     }}}
 
 # response = requests.post(endpoint_add_json, json=body)
-response = requests.get(endpoint_root)
-response = requests.get(f"{endpoint_get_by_id}4")
+# response = requests.get(endpoint_root)
+response = requests.get(f"{endpoint_get_by_website}github")
 
 
 print(response.json())

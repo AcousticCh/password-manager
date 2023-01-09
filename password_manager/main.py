@@ -46,6 +46,18 @@ async def add_json_data(json_data: JsonModel):
 
     return JsonModel.parse_obj(new_data)
 
+@api.get("/website/{website_name}")
+async def get_by_website(website_name: str):
+    with open("./db.json", "r") as file:
+        data = json.load(file)
+    
+    new_data = data["accounts"]
+
+    for val in new_data:
+        if new_data[val]["website"] == website_name:
+            item = data["accounts"][val]
+            return dict(item)
+
 @api.get("/id/{account_id}")
 async def get_by_id(account_id: int):
     ac_id = str(account_id)
