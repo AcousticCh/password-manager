@@ -24,16 +24,24 @@ class AccountIndex(BaseModel):
 class JsonModel(BaseModel):
     accounts: AccountIndex
 
+async def load_db():
+    with open("db.json", "r") as file:
+        data = json.load(file)
+    return data
+
+async def update_db(data):
+    with open("./db.json", "w") as file:
+        json.dump(data, file)
+
+
+
 @api.post("/add_json")
 async def add_json_data(json_data: JsonModel):
     key_list = []
-    # LOAD JSON FILE AND DUMP JSON_DATA TO FILE
-    with open("db.json", "r") as file:
-        data = json.load(file)
+    data = await load_db()
     new_data = json_data.dict()
-    # get > account index and incement 
-    # then replace accountIndex Key
-    # return JsonModel.parse_obj(json_data.dict())
+
+
     final_key = list(data["accounts"].keys())[-1]
     old_key = list(new_data["accounts"].keys())[0]
     new_key = int(final_key) + 1
@@ -41,15 +49,14 @@ async def add_json_data(json_data: JsonModel):
 
     data["accounts"].update(new_data["accounts"])
 
-    with open("db.json", "w") as file:
-        json.dump(data, file)
+    await update_db(data=data)
 
-    return JsonModel.parse_obj(new_data)
+    added_item = JsonModel.parse_obj(new_data)
+    return { "id": new_key, "account added": True, "added_item": added_item }
 
 @api.get("/website/{website_name}")
 async def get_by_website(website_name: str):
-    with open("./db.json", "r") as file:
-        data = json.load(file)
+    data = await load_db()
     
     new_data = data["accounts"]
 
@@ -61,17 +68,25 @@ async def get_by_website(website_name: str):
 @api.get("/id/{account_id}")
 async def get_by_id(account_id: int):
     ac_id = str(account_id)
-    with open("./db.json", "r") as file:
-        data = json.load(file)
+    data = await load_db()
 
     item = data["accounts"][ac_id]
 
     return dict(item)
 
-        
+@api.delete("/delete/{account_id}")
+async def delete_by_id(account_id: int):
+    ac_id = str(account_id)
+
+    data = await load_db()
+
+    del data["accounts"][ac_id]
+
+    await update_db(data=data)
+
+    return {"id": ac_id, "deleted": True}
 
 @api.get("/")
 async def get_data():
-    with open("./db.json", "r") as file:
-        data = json.load(file)
+    data = await load_db()
     return dict(data)
